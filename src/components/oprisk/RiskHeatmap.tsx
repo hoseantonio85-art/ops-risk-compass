@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 
 // 4x4 матрица: вероятность (Y, низ→верх) × влияние (X, лево→право)
 // Каждая ячейка: count рисков, sumLoss (млн ₽), top риски
@@ -55,7 +57,9 @@ const emptyStyles = "bg-card text-muted-foreground/40 border border-dashed borde
 
 export const RiskHeatmap = () => {
   const [hovered, setHovered] = useState<{ r: number; c: number } | null>(null);
+  const [selected, setSelected] = useState<{ r: number; c: number } | null>(null);
   const hoveredCell = hovered ? grid[hovered.r][hovered.c] : null;
+  const selectedCell = selected ? grid[selected.r][selected.c] : null;
 
   return (
     <div className="surface-card flex flex-col p-6">
@@ -90,9 +94,10 @@ export const RiskHeatmap = () => {
                     key={`${r}-${c}`}
                     onMouseEnter={() => setHovered({ r, c })}
                     onMouseLeave={() => setHovered(null)}
+                    onClick={() => !isEmpty && setSelected({ r, c })}
                     title={
                       !isEmpty
-                        ? `Перейти к рискам · ${probabilityLabels[r]} × ${impactLabels[c]}`
+                        ? `Открыть риски · ${probabilityLabels[r]} × ${impactLabels[c]}`
                         : undefined
                     }
                     className={cn(
@@ -100,6 +105,7 @@ export const RiskHeatmap = () => {
                       isEmpty ? emptyStyles : toneStyles[tone],
                       isHotZone && "ring-2 ring-critical/60 ring-offset-1 ring-offset-card",
                       isHovered && !isEmpty && "ring-2 ring-offset-2 ring-offset-card ring-primary/40 scale-[1.04] z-10",
+                      !isEmpty && "cursor-pointer",
                     )}
                   >
                     {isEmpty ? (
@@ -137,10 +143,10 @@ export const RiskHeatmap = () => {
         </div>
       </div>
 
-      {/* Tooltip area */}
-      <div className="mt-4 min-h-[68px] rounded-xl border border-border bg-secondary/40 p-3">
+      {/* Hint area */}
+      <div className="mt-4 min-h-[56px] rounded-xl border border-border bg-secondary/40 p-3">
         {hoveredCell && hoveredCell.count > 0 ? (
-          <div className="space-y-1.5 animate-fade-in-up">
+          <div className="space-y-1 animate-fade-in-up">
             <div className="flex items-center justify-between text-xs">
               <span className="font-medium text-foreground">
                 {probabilityLabels[hovered!.r]} · {impactLabels[hovered!.c]}
@@ -150,18 +156,57 @@ export const RiskHeatmap = () => {
               </span>
             </div>
             <div className="text-[11px] text-muted-foreground">
-              Топ-3: {hoveredCell.top.slice(0, 3).join(" · ")}
-            </div>
-            <div className="pt-0.5 text-[11px] font-semibold text-primary">
-              Клик → риски с фильтром «{probabilityLabels[hovered!.r]} × {impactLabels[hovered!.c]}» →
+              Клик → откроется дровер с разбором ячейки
             </div>
           </div>
         ) : (
           <div className="flex h-full items-center justify-center text-xs text-muted-foreground">
-            Наведите на ячейку — увидите детали. Клик → к рискам с фильтром.
+            Наведите на ячейку — увидите детали. Клик → дровер с разбором.
           </div>
         )}
       </div>
+
+      <Sheet open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
+        <SheetContent side="right" className="w-full overflow-y-auto sm:max-w-[480px]">
+          {selected && selectedCell && (
+            <>
+              <SheetHeader>
+                <SheetTitle className="text-base">
+                  {probabilityLabels[selected.r]} × {impactLabels[selected.c]}
+                </SheetTitle>
+                <SheetDescription className="flex items-baseline gap-2 pt-1">
+                  <span className="font-mono-num text-2xl font-bold text-foreground">{selectedCell.count}</span>
+                  <span className="text-xs text-muted-foreground">
+                    рисков · {selectedCell.loss.toLocaleString("ru-RU")} млн ₽ совокупных потерь
+                  </span>
+                </SheetDescription>
+              </SheetHeader>
+
+              <div className="mt-6">
+                <div className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  Риски в ячейке
+                </div>
+                <ul className="space-y-1.5">
+                  {selectedCell.top.map((name, idx) => (
+                    <li
+                      key={idx}
+                      className="flex items-center justify-between gap-2 rounded-lg border border-border bg-card px-3 py-2 text-xs"
+                    >
+                      <span className="min-w-0 flex-1 truncate text-foreground">{name}</span>
+                      <ArrowRight className="h-3.5 w-3.5 text-muted-foreground" />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <button className="mt-6 inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-secondary">
+                Открыть реестр с фильтром
+                <ArrowRight className="h-4 w-4" />
+              </button>
+            </>
+          )}
+        </SheetContent>
+      </Sheet>
 
       {/* Legend */}
       <div className="mt-4 flex flex-wrap items-center gap-3 text-[10px] uppercase tracking-wider text-muted-foreground">

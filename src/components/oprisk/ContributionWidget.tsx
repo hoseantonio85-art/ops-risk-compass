@@ -1,7 +1,8 @@
 import { useMemo, useState } from "react";
-import { ArrowRight, MousePointerClick } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { BarChart, Bar, XAxis, ResponsiveContainer, Tooltip, Cell } from "recharts";
 import { cn } from "@/lib/utils";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 
 type Segment = {
   id: string;
@@ -216,21 +217,19 @@ const risks: Segment[] = [
 const Donut = ({
   data,
   hovered,
-  selectedId,
   onHover,
   onSelect,
 }: {
   data: Segment[];
   hovered: number | null;
-  selectedId: string | null;
   onHover: (i: number | null) => void;
   onSelect: (id: string) => void;
 }) => {
-  const size = 220;
+  const size = 240;
   const cx = size / 2;
   const cy = size / 2;
-  const r = 88;
-  const innerR = 58;
+  const r = 96;
+  const innerR = 64;
   const total = data.reduce((s, d) => s + d.pct, 0);
   let acc = 0;
   const arcs = data.map((d, i) => {
@@ -238,7 +237,7 @@ const Donut = ({
     acc += d.pct;
     const end = (acc / total) * Math.PI * 2 - Math.PI / 2;
     const large = end - start > Math.PI ? 1 : 0;
-    const isHovered = hovered === i || selectedId === d.id;
+    const isHovered = hovered === i;
     const rOuter = isHovered ? r + 6 : r;
     const x1 = cx + rOuter * Math.cos(start);
     const y1 = cy + rOuter * Math.sin(start);
@@ -251,10 +250,10 @@ const Donut = ({
     const path = `M ${x1} ${y1} A ${rOuter} ${rOuter} 0 ${large} 1 ${x2} ${y2} L ${x3} ${y3} A ${innerR} ${innerR} 0 ${large} 0 ${x4} ${y4} Z`;
     return { path, color: d.color, i, id: d.id };
   });
-  const center = hovered !== null ? data[hovered] : selectedId ? data.find((x) => x.id === selectedId) : null;
+  const center = hovered !== null ? data[hovered] : null;
   return (
     <div className="relative">
-      <svg viewBox={`0 0 ${size} ${size}`} className="h-[220px] w-[220px]">
+      <svg viewBox={`0 0 ${size} ${size}`} className="h-[240px] w-[240px]">
         {arcs.map((a) => (
           <path
             key={a.i}
@@ -266,7 +265,7 @@ const Donut = ({
             style={{
               transition: "all 200ms cubic-bezier(0.4,0,0.2,1)",
               cursor: "pointer",
-              opacity: hovered === null && !selectedId ? 1 : hovered === a.i || selectedId === a.id ? 1 : 0.45,
+              opacity: hovered === null || hovered === a.i ? 1 : 0.5,
             }}
           />
         ))}
@@ -275,7 +274,7 @@ const Donut = ({
         {center ? (
           <>
             <div className="font-mono-num text-3xl font-bold text-foreground">{center.pct}%</div>
-            <div className="mt-1 max-w-[110px] text-[10px] uppercase tracking-wider text-muted-foreground">
+            <div className="mt-1 max-w-[120px] text-[10px] uppercase tracking-wider text-muted-foreground">
               {center.name}
             </div>
           </>
@@ -283,7 +282,7 @@ const Donut = ({
           <>
             <div className="text-[10px] uppercase tracking-wider text-muted-foreground">всего</div>
             <div className="font-mono-num text-3xl font-bold text-foreground">100%</div>
-            <div className="mt-1 text-[10px] text-muted-foreground">кликните</div>
+            <div className="mt-1 text-[10px] text-muted-foreground">кликните сегмент</div>
           </>
         )}
       </div>
@@ -310,90 +309,80 @@ export const ContributionWidget = () => {
         <h2 id="contribution-title" className="text-2xl font-semibold tracking-tight text-foreground">
           Вклад в утилизацию
         </h2>
-        <p className="mt-1 text-sm text-muted-foreground">Что больше всего влияет на лимит — кликните сегмент для разбора</p>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Что больше всего влияет на лимит — кликните сегмент для разбора в дровере
+        </p>
       </div>
 
-      <div className="surface-card grid grid-cols-1 gap-6 p-6 lg:grid-cols-[55fr_45fr]">
-        {/* Левая часть: переключатель + донат + легенда */}
-        <div className="space-y-4">
-          <div className="inline-flex rounded-lg border border-border bg-secondary/60 p-0.5">
-            {(["scenarios", "risks"] as const).map((m) => (
-              <button
-                key={m}
-                onClick={() => switchMode(m)}
-                className={cn(
-                  "rounded-md px-3 py-1 text-xs font-medium transition-all",
-                  mode === m ? "bg-card text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground",
-                )}
-              >
-                {m === "scenarios" ? "По сценариям" : "По рискам"}
-              </button>
-            ))}
-          </div>
+      <div className="surface-card p-6">
+        <div className="mb-5 inline-flex rounded-lg border border-border bg-secondary/60 p-0.5">
+          {(["scenarios", "risks"] as const).map((m) => (
+            <button
+              key={m}
+              onClick={() => switchMode(m)}
+              className={cn(
+                "rounded-md px-3 py-1 text-xs font-medium transition-all",
+                mode === m ? "bg-card text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground",
+              )}
+            >
+              {m === "scenarios" ? "По сценариям" : "По рискам"}
+            </button>
+          ))}
+        </div>
 
-          <div className="flex flex-col items-center gap-5 lg:flex-row lg:items-center">
+        <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[auto_1fr]">
+          <div className="flex justify-center">
             <Donut
               data={data}
               hovered={hovered}
-              selectedId={selectedId}
               onHover={setHovered}
-              onSelect={(id) => setSelectedId((cur) => (cur === id ? null : id))}
+              onSelect={(id) => setSelectedId(id)}
             />
-            <ul className="flex w-full flex-1 flex-col gap-1">
-              {data.map((d, i) => (
-                <li key={d.id}>
-                  <button
-                    onMouseEnter={() => setHovered(i)}
-                    onMouseLeave={() => setHovered(null)}
-                    onClick={() => setSelectedId((cur) => (cur === d.id ? null : d.id))}
-                    className={cn(
-                      "flex w-full items-center gap-2.5 rounded-lg px-2 py-1.5 text-left transition-colors",
-                      selectedId === d.id ? "bg-secondary" : hovered === i ? "bg-secondary/70" : "hover:bg-secondary/60",
-                    )}
-                  >
-                    <span className="h-2.5 w-2.5 shrink-0 rounded-sm" style={{ backgroundColor: d.color }} />
-                    <span className="min-w-0 flex-1 truncate text-sm text-foreground">{d.name}</span>
-                    <span className="font-mono-num text-xs text-muted-foreground">{d.mln} млн</span>
-                    <span className="font-mono-num w-9 text-right text-sm font-semibold text-foreground">{d.pct}%</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
           </div>
+          <ul className="flex w-full flex-col gap-1">
+            {data.map((d, i) => (
+              <li key={d.id}>
+                <button
+                  onMouseEnter={() => setHovered(i)}
+                  onMouseLeave={() => setHovered(null)}
+                  onClick={() => setSelectedId(d.id)}
+                  className={cn(
+                    "group flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left transition-colors",
+                    hovered === i ? "bg-secondary" : "hover:bg-secondary/70",
+                  )}
+                >
+                  <span className="h-2.5 w-2.5 shrink-0 rounded-sm" style={{ backgroundColor: d.color }} />
+                  <span className="min-w-0 flex-1 truncate text-sm text-foreground">{d.name}</span>
+                  <span className="font-mono-num text-xs text-muted-foreground">{d.mln} млн</span>
+                  <span className="font-mono-num w-10 text-right text-sm font-semibold text-foreground">{d.pct}%</span>
+                  <ArrowRight className="h-3.5 w-3.5 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
+      </div>
 
-        {/* Правая часть: drill-down */}
-        <div className="rounded-2xl border border-border bg-secondary/30 p-5">
-          {!selected ? (
-            <div className="flex h-full min-h-[320px] flex-col items-center justify-center gap-2 text-center">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-card text-muted-foreground shadow-xs">
-                <MousePointerClick className="h-5 w-5" />
-              </div>
-              <div className="text-sm font-medium text-foreground">Выберите категорию</div>
-              <div className="max-w-[220px] text-xs text-muted-foreground">
-                Нажмите сегмент доната или строку легенды, чтобы увидеть динамику и инциденты
-              </div>
-            </div>
-          ) : (
-            <div className="flex h-full flex-col">
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 shrink-0 rounded-sm" style={{ backgroundColor: selected.color }} />
-                    <h3 className="truncate text-sm font-semibold text-foreground">{selected.name}</h3>
-                  </div>
-                  <div className="mt-1 flex items-baseline gap-2">
-                    <span className="font-mono-num text-2xl font-bold text-foreground">{selected.mln}</span>
-                    <span className="text-xs text-muted-foreground">млн ₽ · {selected.pct}% вклад</span>
-                  </div>
+      <Sheet open={!!selected} onOpenChange={(o) => !o && setSelectedId(null)}>
+        <SheetContent side="right" className="w-full overflow-y-auto sm:max-w-[520px]">
+          {selected && (
+            <>
+              <SheetHeader>
+                <div className="flex items-center gap-2">
+                  <span className="h-3 w-3 shrink-0 rounded-sm" style={{ backgroundColor: selected.color }} />
+                  <SheetTitle className="text-base">{selected.name}</SheetTitle>
                 </div>
-              </div>
+                <SheetDescription className="flex items-baseline gap-2 pt-1">
+                  <span className="font-mono-num text-2xl font-bold text-foreground">{selected.mln}</span>
+                  <span className="text-xs text-muted-foreground">млн ₽ · {selected.pct}% вклад в утилизацию</span>
+                </SheetDescription>
+              </SheetHeader>
 
-              <div className="mt-4">
-                <div className="mb-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+              <div className="mt-6">
+                <div className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                   Потери по месяцам
                 </div>
-                <div className="h-[140px] w-full">
+                <div className="h-[160px] w-full">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={selected.byMonth} margin={{ top: 4, right: 0, left: 0, bottom: 0 }}>
                       <XAxis
@@ -423,15 +412,15 @@ export const ContributionWidget = () => {
                 </div>
               </div>
 
-              <div className="mt-4 flex-1">
-                <div className="mb-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                  Инциденты категории
+              <div className="mt-6">
+                <div className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  Топ инцидентов категории
                 </div>
                 <ul className="space-y-1">
                   {selected.incidents.slice(0, 5).map((inc, idx) => (
                     <li
                       key={idx}
-                      className="flex items-center justify-between gap-2 rounded-lg bg-card px-2.5 py-1.5 text-xs"
+                      className="flex items-center justify-between gap-2 rounded-lg border border-border bg-card px-3 py-2 text-xs"
                     >
                       <span className="min-w-0 flex-1 truncate text-foreground">{inc.name}</span>
                       <span className="text-muted-foreground">{inc.date}</span>
@@ -440,22 +429,17 @@ export const ContributionWidget = () => {
                       </span>
                     </li>
                   ))}
-                  {selected.incidents.length > 5 && (
-                    <li className="px-2.5 text-[11px] text-muted-foreground">
-                      ещё {selected.incidents.length - 5}
-                    </li>
-                  )}
                 </ul>
               </div>
 
-              <button className="mt-4 inline-flex items-center justify-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-secondary">
+              <button className="mt-6 inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-secondary">
                 Все инциденты этой категории
-                <ArrowRight className="h-3.5 w-3.5" />
+                <ArrowRight className="h-4 w-4" />
               </button>
-            </div>
+            </>
           )}
-        </div>
-      </div>
+        </SheetContent>
+      </Sheet>
     </section>
   );
 };

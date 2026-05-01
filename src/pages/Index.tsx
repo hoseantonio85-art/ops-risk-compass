@@ -2,7 +2,6 @@ import { TopBar } from "@/components/oprisk/TopBar";
 import { PageHeader } from "@/components/oprisk/PageHeader";
 import { AISummary } from "@/components/oprisk/AISummary";
 import { LimitCards } from "@/components/oprisk/LimitCards";
-import { LimitUtilization } from "@/components/oprisk/LimitUtilization";
 import { ContributionWidget } from "@/components/oprisk/ContributionWidget";
 import { FocusCases } from "@/components/oprisk/FocusCases";
 import { AttentionZone } from "@/components/oprisk/AttentionZone";
@@ -16,11 +15,10 @@ const Index = () => {
         <PageHeader />
         <AISummary />
         <LimitCards />
-        <LimitUtilization />
-        <ContributionWidget />
         <FocusCases />
         <AttentionZone />
         <Analytics />
+        <ContributionWidget />
 
         <footer className="flex items-center justify-between border-t border-border pt-6 text-xs text-muted-foreground">
           <span>OpRisk Platform · прототип главной страницы</span>
