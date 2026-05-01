@@ -1,19 +1,65 @@
-import { ArrowRight, ArrowUpRight, TrendingUp, AlertTriangle, ShieldCheck, ClipboardCheck, Activity, FileWarning } from "lucide-react";
+import { useState } from "react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  TrendingUp,
+  AlertTriangle,
+  ShieldCheck,
+  ClipboardCheck,
+  Activity,
+  FileWarning,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "./StatusBadge";
 import { cn } from "@/lib/utils";
 
-const contributors = [
-  { name: "Риск операционных ошибок", value: 32, kind: "Риск" },
-  { name: "Риск клиентских претензий", value: 21, kind: "Риск" },
-  { name: "Сценарий «Ошибки обработки операций»", value: 18, kind: "Сценарий" },
+type Contributor = { name: string; value: number; hint?: string };
+
+const byLossTypes: Contributor[] = [
+  { name: "Ошибки обработки операций", value: 32, hint: "Тип потерь" },
+  { name: "Мошенничество", value: 21, hint: "Тип потерь" },
+  { name: "Системные сбои", value: 18, hint: "Тип потерь" },
+  { name: "Ошибки персонала", value: 12, hint: "Тип потерь" },
+  { name: "Прочее", value: 17, hint: "Тип потерь" },
+];
+
+const byScenarios: Contributor[] = [
+  { name: "Сценарий «Ошибки обработки операций»", value: 28, hint: "Сценарий" },
+  { name: "Сценарий «Сбои каналов обслуживания»", value: 22, hint: "Сценарий" },
+  { name: "Сценарий «Кибер-инциденты»", value: 16, hint: "Сценарий" },
+  { name: "Сценарий «Регуляторные изменения»", value: 14, hint: "Сценарий" },
+  { name: "Прочее", value: 20, hint: "Сценарий" },
 ];
 
 const signals = [
-  { label: "Риски", value: "спокойно, новых нет", tone: "calm" as const, icon: ShieldCheck },
-  { label: "Меры", value: "4 просрочены", tone: "attention" as const, icon: ClipboardCheck },
-  { label: "КИРы", value: "3 в жёлтой зоне", tone: "attention" as const, icon: Activity },
-  { label: "Инциденты", value: "5 фокусных", tone: "attention" as const, icon: FileWarning },
+  {
+    label: "Риски",
+    value: "Спокойно, новых нет",
+    cta: "Открыть реестр",
+    tone: "calm" as const,
+    icon: ShieldCheck,
+  },
+  {
+    label: "Меры",
+    value: "4 просроченные меры",
+    cta: "Открыть просроченные",
+    tone: "attention" as const,
+    icon: ClipboardCheck,
+  },
+  {
+    label: "КИРы",
+    value: "3 в жёлтой зоне",
+    cta: "Открыть с фильтром «жёлтая»",
+    tone: "attention" as const,
+    icon: Activity,
+  },
+  {
+    label: "Инциденты",
+    value: "5 фокусных",
+    cta: "Открыть фокусные",
+    tone: "attention" as const,
+    icon: FileWarning,
+  },
 ];
 
 // Полукольцевой индикатор утилизации
@@ -48,10 +94,14 @@ const Gauge = ({ value }: { value: number }) => {
           strokeDashoffset={offset}
           style={{ transition: "stroke-dashoffset 1s cubic-bezier(0.4,0,0.2,1)" }}
         />
-        {/* Critical threshold tick at 90% */}
         <line
-          x1="178" y1="34" x2="190" y2="26"
-          stroke="hsl(var(--critical))" strokeWidth="2" strokeLinecap="round"
+          x1="178"
+          y1="34"
+          x2="190"
+          y2="26"
+          stroke="hsl(var(--critical))"
+          strokeWidth="2"
+          strokeLinecap="round"
         />
       </svg>
       <div className="relative z-10 mb-1 flex flex-col items-center">
@@ -65,6 +115,10 @@ const Gauge = ({ value }: { value: number }) => {
 };
 
 export const LimitUtilization = () => {
+  const [mode, setMode] = useState<"loss" | "scenarios">("loss");
+  const contributors = mode === "loss" ? byLossTypes : byScenarios;
+  const max = Math.max(...contributors.map((c) => c.value));
+
   return (
     <section aria-labelledby="limit-title" className="grid grid-cols-1 gap-6 lg:grid-cols-3">
       {/* Main utilization card — занимает 2/3 */}
@@ -75,10 +129,12 @@ export const LimitUtilization = () => {
               Утилизация лимита
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Главный индикатор по операционному риску
+              Из чего складывается · где основные потери · куда идти разбираться
             </p>
           </div>
-          <StatusBadge tone="attention" icon={AlertTriangle}>Зона внимания</StatusBadge>
+          <StatusBadge tone="attention" icon={AlertTriangle}>
+            Зона внимания
+          </StatusBadge>
         </div>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-[auto_1fr]">
@@ -96,18 +152,49 @@ export const LimitUtilization = () => {
                 </span>
                 <span className="text-muted-foreground">·</span>
                 <span className="text-muted-foreground">
-                  до критич. порога <span className="font-mono-num font-semibold text-foreground">8%</span>
+                  до критич. порога{" "}
+                  <span className="font-mono-num font-semibold text-foreground">8%</span>
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Правая часть — основной вклад */}
+          {/* Правая часть — основной вклад через типы потерь / сценарии */}
           <div className="space-y-3">
-            <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              Основной вклад
+            <div className="flex items-center justify-between gap-3">
+              <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Основной вклад
+              </div>
+              <div
+                role="tablist"
+                aria-label="Группировка вклада"
+                className="inline-flex rounded-lg border border-border bg-secondary/60 p-0.5"
+              >
+                {(
+                  [
+                    { id: "loss", label: "По типам потерь" },
+                    { id: "scenarios", label: "По сценариям" },
+                  ] as const
+                ).map((t) => (
+                  <button
+                    key={t.id}
+                    role="tab"
+                    aria-selected={mode === t.id}
+                    onClick={() => setMode(t.id)}
+                    className={cn(
+                      "rounded-md px-2.5 py-1 text-[11px] font-medium transition-all",
+                      mode === t.id
+                        ? "bg-card text-foreground shadow-xs"
+                        : "text-muted-foreground hover:text-foreground",
+                    )}
+                  >
+                    {t.label}
+                  </button>
+                ))}
+              </div>
             </div>
-            <div className="space-y-2.5">
+
+            <div className="space-y-2">
               {contributors.map((c, i) => (
                 <button
                   key={c.name}
@@ -118,14 +205,15 @@ export const LimitUtilization = () => {
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="truncate text-sm font-medium text-foreground">{c.name}</div>
-                    <div className="text-[11px] uppercase tracking-wide text-muted-foreground">{c.kind}</div>
+                    <div className="text-[11px] uppercase tracking-wide text-muted-foreground">
+                      {c.hint}
+                    </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    {/* mini bar */}
                     <div className="hidden h-1.5 w-20 overflow-hidden rounded-full bg-neutral-soft sm:block">
                       <div
                         className="h-full rounded-full bg-gradient-attention"
-                        style={{ width: `${(c.value / 32) * 100}%` }}
+                        style={{ width: `${(c.value / max) * 100}%` }}
                       />
                     </div>
                     <span className="font-mono-num text-sm font-semibold text-foreground">
@@ -150,18 +238,18 @@ export const LimitUtilization = () => {
         </div>
       </div>
 
-      {/* Краткие сигналы */}
+      {/* Краткие сигналы — кликабельные карточки с явным CTA */}
       <aside className="surface-card p-5">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
             Краткие сигналы
           </h3>
         </div>
-        <div className="space-y-1">
+        <div className="space-y-2">
           {signals.map((s) => (
             <button
               key={s.label}
-              className="group flex w-full items-center gap-3 rounded-xl p-3 text-left transition-colors hover:bg-secondary"
+              className="group flex w-full items-center gap-3 rounded-xl border border-border bg-card p-3 text-left transition-all hover:-translate-y-px hover:border-border-strong hover:shadow-elevated focus:outline-none focus:ring-2 focus:ring-primary/40"
             >
               <div
                 className={cn(
@@ -175,8 +263,11 @@ export const LimitUtilization = () => {
               <div className="min-w-0 flex-1">
                 <div className="text-sm font-semibold text-foreground">{s.label}</div>
                 <div className="truncate text-xs text-muted-foreground">{s.value}</div>
+                <div className="mt-1 inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wide text-primary opacity-90 group-hover:opacity-100">
+                  {s.cta}
+                  <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+                </div>
               </div>
-              <ArrowRight className="h-4 w-4 text-muted-foreground/50 transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
             </button>
           ))}
         </div>
