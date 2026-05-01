@@ -167,7 +167,7 @@ export const RiskHeatmap = () => {
       </div>
 
       <Sheet open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
-        <SheetContent side="right" className="w-full overflow-y-auto sm:max-w-[480px]">
+        <SheetContent side="right" className="w-[92vw] overflow-y-auto rounded-l-2xl border-0 p-0 shadow-floating sm:max-w-[640px]"><div className="p-8 space-y-6">
           {selected && selectedCell && (
             <>
               <SheetHeader>
@@ -205,7 +205,7 @@ export const RiskHeatmap = () => {
               </button>
             </>
           )}
-        </SheetContent>
+        </div></SheetContent>
       </Sheet>
 
       {/* Legend */}

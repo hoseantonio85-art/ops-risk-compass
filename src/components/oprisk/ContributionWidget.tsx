@@ -364,7 +364,7 @@ export const ContributionWidget = () => {
       </div>
 
       <Sheet open={!!selected} onOpenChange={(o) => !o && setSelectedId(null)}>
-        <SheetContent side="right" className="w-full overflow-y-auto sm:max-w-[520px]">
+        <SheetContent side="right" className="w-[92vw] overflow-y-auto rounded-l-2xl border-0 p-0 shadow-floating sm:max-w-[640px]"><div className="p-8 space-y-6">
           {selected && (
             <>
               <SheetHeader>
@@ -438,7 +438,7 @@ export const ContributionWidget = () => {
               </button>
             </>
           )}
-        </SheetContent>
+        </div></SheetContent>
       </Sheet>
     </section>
   );

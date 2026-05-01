@@ -271,7 +271,7 @@ export const AttentionZone = () => {
       </div>
 
       <Sheet open={!!openKey} onOpenChange={(o) => !o && setOpenKey(null)}>
-        <SheetContent side="right" className="w-full overflow-y-auto sm:max-w-[480px]">
+        <SheetContent side="right" className="w-[92vw] overflow-y-auto rounded-l-2xl border-0 p-0 shadow-floating sm:max-w-[640px]"><div className="p-8 space-y-6">
           {openMetric && detail && openCard && (
             <>
               <SheetHeader>
@@ -350,7 +350,7 @@ export const AttentionZone = () => {
               </button>
             </>
           )}
-        </SheetContent>
+        </div></SheetContent>
       </Sheet>
     </section>
   );

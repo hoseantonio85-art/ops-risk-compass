@@ -412,7 +412,7 @@ export const LimitCards = () => {
       </section>
 
       <Sheet open={!!openKey} onOpenChange={(o) => !o && setOpenKey(null)}>
-        <SheetContent side="right" className="w-full overflow-y-auto sm:max-w-xl">
+        <SheetContent side="right" className="w-[92vw] overflow-y-auto rounded-l-2xl border-0 p-0 shadow-floating sm:max-w-[640px]"><div className="p-8 space-y-6">
           {active && (
             <>
               <SheetHeader className="mb-6">
@@ -430,7 +430,7 @@ export const LimitCards = () => {
               )}
             </>
           )}
-        </SheetContent>
+        </div></SheetContent>
       </Sheet>
     </>
   );
