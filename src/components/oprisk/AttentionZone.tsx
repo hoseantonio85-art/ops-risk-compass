@@ -118,9 +118,15 @@ export const AttentionZone = () => {
                 ))}
               </div>
 
+              {card.hint && (
+                <p className="mt-5 rounded-lg border border-border bg-secondary/50 px-3 py-2 text-xs leading-relaxed text-muted-foreground">
+                  {card.hint}
+                </p>
+              )}
+
               <Button
                 variant="outline"
-                className="mt-6 w-full border-border-strong bg-card hover:bg-primary hover:text-primary-foreground hover:border-primary"
+                className="mt-4 w-full border-border-strong bg-card hover:bg-primary hover:text-primary-foreground hover:border-primary"
               >
                 {card.cta}
                 <ArrowRight className="ml-1.5 h-4 w-4" />
