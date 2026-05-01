@@ -4,7 +4,7 @@ export const AISummary = () => {
   return (
     <section
       aria-labelledby="ai-summary-title"
-      className="relative overflow-hidden rounded-2xl border border-primary/15 bg-gradient-ai-soft p-8 shadow-ai"
+      className="relative overflow-hidden rounded-2xl bg-gradient-ai-soft p-8 shadow-ai"
     >
       {/* Subtle decorative orb */}
       <div
@@ -36,7 +36,7 @@ export const AISummary = () => {
             с высокими рисками.
           </p>
 
-          <div className="flex items-start gap-2.5 rounded-xl border border-primary/10 bg-card/60 p-4 backdrop-blur-sm">
+          <div className="flex items-start gap-2.5 rounded-xl bg-card/70 p-4 backdrop-blur-sm">
             <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0 text-primary" strokeWidth={2.5} />
             <div className="space-y-1.5">
               <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">

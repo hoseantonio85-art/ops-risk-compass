@@ -253,7 +253,7 @@ export const AttentionZone = () => {
               </div>
 
               {card.hint && (
-                <p className="mt-5 rounded-lg border border-border bg-secondary/50 px-3 py-2 text-xs leading-relaxed text-muted-foreground">
+                <p className="mt-5 rounded-xl bg-secondary/60 px-3 py-2 text-xs leading-relaxed text-muted-foreground">
                   {card.hint}
                 </p>
               )}
@@ -271,7 +271,7 @@ export const AttentionZone = () => {
       </div>
 
       <Sheet open={!!openKey} onOpenChange={(o) => !o && setOpenKey(null)}>
-        <SheetContent side="right" className="w-[92vw] overflow-y-auto rounded-l-2xl border-0 p-0 shadow-floating sm:max-w-[640px]"><div className="p-8 space-y-6">
+        <SheetContent side="right" className="w-[92vw] overflow-y-auto p-0 sm:max-w-[640px]"><div className="p-8 space-y-6">
           {openMetric && detail && openCard && (
             <>
               <SheetHeader>
@@ -298,7 +298,7 @@ export const AttentionZone = () => {
                   <div className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                     Разбивка
                   </div>
-                  <div className="divide-y divide-border rounded-lg border border-border bg-card">
+                  <div className="divide-y divide-border rounded-xl bg-card">
                     {detail.breakdown.map((b, idx) => (
                       <div key={idx} className="flex items-center justify-between px-3 py-2 text-xs">
                         <span className="text-muted-foreground">{b.label}</span>
@@ -315,11 +315,11 @@ export const AttentionZone = () => {
                     <div className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                       Что попадает в эту цифру
                     </div>
-                    <ul className="space-y-1.5">
+                    <ul className="divide-y divide-border rounded-xl bg-card">
                       {detail.items.map((item) => (
                         <li
                           key={item.id}
-                          className="flex items-start justify-between gap-3 rounded-lg border border-border bg-card px-3 py-2.5 text-xs"
+                          className="flex items-start justify-between gap-3 px-3 py-2.5 text-xs"
                         >
                           <div className="min-w-0 flex-1">
                             <div className="flex items-center gap-2">
@@ -338,13 +338,13 @@ export const AttentionZone = () => {
                 )}
 
                 {detail.items.length === 0 && (
-                  <div className="rounded-lg border border-dashed border-border bg-secondary/30 px-3 py-4 text-center text-xs text-muted-foreground">
+                  <div className="rounded-xl bg-secondary/50 px-3 py-4 text-center text-xs text-muted-foreground">
                     Объектов в этой выборке нет
                   </div>
                 )}
               </div>
 
-              <button className="mt-6 inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-secondary">
+              <button className="mt-6 inline-flex w-full items-center justify-center gap-1.5 rounded-xl bg-primary px-3 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90">
                 {detail.ctaLabel}
                 <ArrowRight className="h-4 w-4" />
               </button>
