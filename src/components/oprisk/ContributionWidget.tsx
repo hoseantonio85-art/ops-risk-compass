@@ -273,7 +273,7 @@ const Donut = ({
       <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center text-center">
         {center ? (
           <>
-            <div className="font-mono-num text-3xl font-bold text-foreground">{center.pct}%</div>
+            <div className="text-3xl font-bold text-foreground">{center.pct}%</div>
             <div className="mt-1 max-w-[120px] text-[10px] uppercase tracking-wider text-muted-foreground">
               {center.name}
             </div>
@@ -281,7 +281,7 @@ const Donut = ({
         ) : (
           <>
             <div className="text-[10px] uppercase tracking-wider text-muted-foreground">всего</div>
-            <div className="font-mono-num text-3xl font-bold text-foreground">100%</div>
+            <div className="text-3xl font-bold text-foreground">100%</div>
             <div className="mt-1 text-[10px] text-muted-foreground">кликните сегмент</div>
           </>
         )}
@@ -353,8 +353,8 @@ export const ContributionWidget = () => {
                 >
                   <span className="h-2.5 w-2.5 shrink-0 rounded-sm" style={{ backgroundColor: d.color }} />
                   <span className="min-w-0 flex-1 truncate text-sm text-foreground">{d.name}</span>
-                  <span className="font-mono-num text-xs text-muted-foreground">{d.mln} млн</span>
-                  <span className="font-mono-num w-10 text-right text-sm font-semibold text-foreground">{d.pct}%</span>
+                  <span className="text-xs text-muted-foreground">{d.mln} млн</span>
+                  <span className="w-10 text-right text-sm font-semibold text-foreground">{d.pct}%</span>
                   <ArrowRight className="h-3.5 w-3.5 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
                 </button>
               </li>
@@ -373,7 +373,7 @@ export const ContributionWidget = () => {
                   <SheetTitle className="text-base">{selected.name}</SheetTitle>
                 </div>
                 <SheetDescription className="flex items-baseline gap-2 pt-1">
-                  <span className="font-mono-num text-2xl font-bold text-foreground">{selected.mln}</span>
+                  <span className="text-2xl font-bold text-foreground">{selected.mln}</span>
                   <span className="text-xs text-muted-foreground">млн ₽ · {selected.pct}% вклад в утилизацию</span>
                 </SheetDescription>
               </SheetHeader>
@@ -424,7 +424,7 @@ export const ContributionWidget = () => {
                     >
                       <span className="min-w-0 flex-1 truncate text-foreground">{inc.name}</span>
                       <span className="text-muted-foreground">{inc.date}</span>
-                      <span className="font-mono-num w-16 text-right font-semibold text-foreground">
+                      <span className="w-16 text-right font-semibold text-foreground">
                         {inc.sum.toFixed(1)} млн
                       </span>
                     </li>

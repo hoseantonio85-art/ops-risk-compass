@@ -104,7 +104,7 @@ export const FocusCases = () => {
               <div className="mt-5 space-y-2.5 border-t border-border pt-4 text-sm">
                 <div className="flex items-baseline justify-between">
                   <span className="text-muted-foreground">Потери</span>
-                  <span className="font-mono-num text-base font-semibold text-foreground">{c.loss}</span>
+                  <span className="text-base font-semibold text-foreground">{c.loss}</span>
                 </div>
                 {c.relatedRisk && (
                   <div className="flex items-start justify-between gap-3">

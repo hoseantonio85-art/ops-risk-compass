@@ -136,7 +136,7 @@ const Donut = ({ pct, color }: { pct: number; color: string }) => {
         />
       </svg>
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className="font-mono-num text-xs font-bold text-foreground">{Math.round(pct)}%</span>
+        <span className="text-xs font-bold text-foreground">{Math.round(pct)}%</span>
       </div>
     </div>
   );
@@ -172,12 +172,12 @@ const DirectDrawerBody = ({ card }: { card: DirectCard }) => {
       <div className="flex items-end justify-between gap-6 rounded-xl border border-border bg-secondary/40 p-5">
         <div>
           <div className="text-xs uppercase tracking-wide text-muted-foreground">Факт потерь · YTD</div>
-          <div className="mt-1 font-mono-num text-4xl font-bold text-foreground">
+          <div className="mt-1 text-4xl font-bold text-foreground">
             {card.fact}
             <span className="ml-1 text-base font-medium text-muted-foreground">млн ₽</span>
           </div>
           <div className="mt-1 text-xs text-muted-foreground">
-            из <span className="font-mono-num font-semibold text-foreground">{card.limit}</span> млн ₽ годового лимита
+            из <span className="font-semibold text-foreground">{card.limit}</span> млн ₽ годового лимита
           </div>
         </div>
         <div className="flex flex-col items-end gap-1">
@@ -231,10 +231,10 @@ const DirectDrawerBody = ({ card }: { card: DirectCard }) => {
                 i !== list.length - 1 && "border-b border-border",
               )}
             >
-              <span className="font-mono-num text-xs text-muted-foreground w-10">{it.date}</span>
-              <span className="font-mono-num text-[11px] font-semibold text-muted-foreground w-20">{it.id}</span>
+              <span className="text-xs text-muted-foreground w-10">{it.date}</span>
+              <span className="text-[11px] font-semibold text-muted-foreground w-20">{it.id}</span>
               <span className="flex-1 truncate text-sm text-foreground">{it.title}</span>
-              <span className="font-mono-num text-sm font-semibold text-foreground">{it.sum} млн</span>
+              <span className="text-sm font-semibold text-foreground">{it.sum} млн</span>
               <span
                 className={cn(
                   "rounded-full px-2 py-0.5 text-[11px] font-medium",
@@ -266,7 +266,7 @@ const ForecastDrawerBody = ({ card }: { card: ForecastCard }) => {
       <div className="flex items-end justify-between gap-6 rounded-xl border border-border bg-secondary/40 p-5">
         <div>
           <div className="text-xs uppercase tracking-wide text-muted-foreground">Прогноз на конец года</div>
-          <div className="mt-1 font-mono-num text-4xl font-bold text-foreground">
+          <div className="mt-1 text-4xl font-bold text-foreground">
             {card.forecast}
             <span className="ml-1 text-base font-medium text-muted-foreground">млн ₽</span>
           </div>
@@ -314,7 +314,7 @@ const ForecastDrawerBody = ({ card }: { card: ForecastCard }) => {
                 <div className="truncate text-sm font-medium text-foreground">{f.title}</div>
                 <div className="text-xs text-muted-foreground">{f.note}</div>
               </div>
-              <span className="font-mono-num text-sm font-semibold text-foreground">{f.delta}</span>
+              <span className="text-sm font-semibold text-foreground">{f.delta}</span>
             </div>
           ))}
         </div>
@@ -354,7 +354,7 @@ export const LimitCards = () => {
                     <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                       {c.category}
                     </div>
-                    <div className="mt-2 font-mono-num text-3xl font-bold leading-none text-foreground">
+                    <div className="mt-2 text-3xl font-bold leading-none text-foreground">
                       {c.fact}
                       <span className="ml-1 text-base font-medium text-muted-foreground">млн ₽</span>
                     </div>
@@ -363,7 +363,7 @@ export const LimitCards = () => {
                 </div>
                 <div className="mt-4 flex items-center justify-between gap-2 text-xs text-muted-foreground">
                   <span>
-                    из <span className="font-mono-num font-semibold text-foreground">{c.limit}</span> млн ₽ лимита
+                    из <span className="font-semibold text-foreground">{c.limit}</span> млн ₽ лимита
                   </span>
                   <span className="inline-flex items-center gap-0.5 text-foreground opacity-0 transition-opacity group-hover:opacity-100">
                     Детали <ArrowRight className="h-3 w-3" />
@@ -386,7 +386,7 @@ export const LimitCards = () => {
                   <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                     {c.category}
                   </div>
-                  <div className="mt-2 font-mono-num text-3xl font-bold leading-none text-foreground">
+                  <div className="mt-2 text-3xl font-bold leading-none text-foreground">
                     {c.forecast}
                     <span className="ml-1 text-base font-medium text-muted-foreground">млн ₽</span>
                   </div>
@@ -397,7 +397,7 @@ export const LimitCards = () => {
                 <span className="text-muted-foreground">прогноз на конец года</span>
                 <span
                   className={cn(
-                    "inline-flex items-center gap-0.5 font-mono-num font-semibold",
+                    "inline-flex items-center gap-0.5 font-semibold",
                     rising ? "text-attention" : "text-calm",
                   )}
                 >
