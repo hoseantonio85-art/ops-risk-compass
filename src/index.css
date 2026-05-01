@@ -3,73 +3,85 @@
 @tailwind utilities;
 
 /* OpRisk Platform — Design System
-   Все цвета в HSL. Семантические токены для статусов внимания.
+   Палитра: 8 семейств × 10 ступеней (gray/green/red/amber/blue/purple/pink/orange).
+   Все цвета только через CSS-переменные в HSL.
 */
 
 @layer base {
   :root {
-    /* Surfaces — холодный светло-серый фон, белые карточки */
-    --background: 220 16% 96%;
-    --foreground: 222 25% 12%;
+    /* Surfaces — Gray (палитра gray-50..900) */
+    --background: 210 14% 96%;            /* gray-100 #F2F5F7 */
+    --foreground: 213 9% 16%;             /* gray-900 #24292E */
 
     --card: 0 0% 100%;
-    --card-foreground: 222 25% 12%;
+    --card-foreground: 213 9% 16%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222 25% 12%;
+    --popover-foreground: 213 9% 16%;
 
-    /* Brand — насыщенный изумруд */
-    --primary: 158 70% 42%;
+    /* Brand — Green-600 */
+    --primary: 152 96% 30%;               /* green-600 #039855 */
     --primary-foreground: 0 0% 100%;
-    --primary-soft: 158 70% 94%;
-    --primary-glow: 180 70% 50%;
+    --primary-soft: 152 81% 96%;          /* green-50  #ECFDF3 */
+    --primary-glow: 152 82% 39%;          /* green-500 #12B76A */
 
-    --secondary: 220 16% 94%;
-    --secondary-foreground: 222 25% 18%;
+    --secondary: 213 12% 95%;             /* gray-100..200 */
+    --secondary-foreground: 213 11% 24%;  /* gray-800 #2F363D */
 
-    --muted: 220 16% 94%;
-    --muted-foreground: 220 10% 46%;
+    --muted: 213 12% 95%;
+    --muted-foreground: 211 8% 45%;       /* gray-500 #6A737D */
 
-    --accent: 158 70% 94%;
-    --accent-foreground: 158 70% 28%;
+    --accent: 152 81% 96%;                /* green-50 */
+    --accent-foreground: 153 96% 24%;     /* green-700 #027A48 */
 
-    /* Semantic — статусы внимания */
-    --calm: 158 64% 42%;
+    /* Semantic — статусы */
+    --calm: 152 96% 30%;                  /* green-600 */
     --calm-foreground: 0 0% 100%;
-    --calm-soft: 158 60% 94%;
+    --calm-soft: 152 81% 96%;             /* green-50 */
 
-    --attention: 38 92% 52%;
+    --attention: 32 95% 50%;              /* amber-500 #F79009 */
     --attention-foreground: 0 0% 100%;
-    --attention-soft: 38 100% 94%;
+    --attention-soft: 38 100% 96%;        /* amber-50  #FFFAEB */
 
-    --critical: 0 80% 58%;
+    --critical: 4 86% 58%;                /* red-500 #F04438 */
     --critical-foreground: 0 0% 100%;
-    --critical-soft: 0 80% 96%;
+    --critical-soft: 7 86% 97%;           /* red-50  #FEF3F2 */
 
-    --neutral: 220 12% 60%;
-    --neutral-soft: 220 16% 92%;
+    --neutral: 213 7% 62%;                /* gray-400 #959DA5 */
+    --neutral-soft: 213 10% 89%;          /* gray-200 #E1E4E8 */
 
-    --destructive: 0 80% 58%;
+    --destructive: 4 86% 58%;             /* red-500 */
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 16% 90%;
-    --border-strong: 220 16% 84%;
-    --input: 220 16% 90%;
-    --ring: 158 70% 42%;
+    --border: 213 10% 89%;                /* gray-200 */
+    --border-strong: 213 8% 84%;          /* gray-300 #D1D5DA */
+    --input: 213 10% 89%;
+    --ring: 152 96% 30%;                  /* green-600 */
 
     --radius: 0.875rem;
 
-    /* Gradients — голубой → бирюзовый для AI */
-    --gradient-ai: linear-gradient(135deg, hsl(200 90% 56%) 0%, hsl(170 80% 50%) 100%);
-    --gradient-ai-soft: linear-gradient(135deg, hsl(200 90% 96%) 0%, hsl(170 80% 96%) 100%);
-    --gradient-attention: linear-gradient(135deg, hsl(38 92% 56%) 0%, hsl(22 90% 54%) 100%);
+    /* Chart palette — фиксированные цвета сегментов из палитры */
+    --chart-1: 32 95% 50%;                /* amber-500  #F79009 */
+    --chart-2: 217 90% 51%;               /* blue-600   #1570EF */
+    --chart-3: 4 86% 58%;                 /* red-500    #F04438 */
+    --chart-4: 258 78% 70%;               /* purple-500 #9E77ED */
+    --chart-5: 326 81% 60%;               /* pink-500   #EE46BC */
+    --chart-6: 213 7% 62%;                /* gray-400   #959DA5 */
 
-    /* Shadows — почти отсутствуют, как в референсе */
-    --shadow-xs: 0 1px 1px 0 hsl(222 25% 12% / 0.02);
-    --shadow-sm: 0 1px 2px 0 hsl(222 25% 12% / 0.03);
-    --shadow-md: 0 2px 8px -2px hsl(222 25% 12% / 0.04), 0 1px 3px -1px hsl(222 25% 12% / 0.03);
-    --shadow-lg: 0 8px 24px -8px hsl(222 25% 12% / 0.08), 0 2px 6px -2px hsl(222 25% 12% / 0.04);
-    --shadow-ai: 0 8px 28px -12px hsl(180 70% 40% / 0.22);
+    /* Gradients — собраны из палитры */
+    --gradient-ai: linear-gradient(135deg, hsl(217 90% 51%) 0%, hsl(152 82% 39%) 100%);
+                                          /* blue-600 → green-500 */
+    --gradient-ai-soft: linear-gradient(135deg, hsl(214 100% 97%) 0%, hsl(152 81% 96%) 100%);
+                                          /* blue-50 → green-50 */
+    --gradient-attention: linear-gradient(135deg, hsl(32 95% 50%) 0%, hsl(20 91% 48%) 100%);
+                                          /* amber-500 → orange-600 #EC4A0A */
+
+    /* Shadows — почти отсутствуют */
+    --shadow-xs: 0 1px 1px 0 hsl(213 9% 16% / 0.02);
+    --shadow-sm: 0 1px 2px 0 hsl(213 9% 16% / 0.03);
+    --shadow-md: 0 2px 8px -2px hsl(213 9% 16% / 0.04), 0 1px 3px -1px hsl(213 9% 16% / 0.03);
+    --shadow-lg: 0 8px 24px -8px hsl(213 9% 16% / 0.08), 0 2px 6px -2px hsl(213 9% 16% / 0.04);
+    --shadow-ai: 0 8px 28px -12px hsl(217 90% 51% / 0.22);
 
     --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
   }
