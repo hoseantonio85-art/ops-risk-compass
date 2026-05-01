@@ -169,7 +169,7 @@ const DirectDrawerBody = ({ card }: { card: DirectCard }) => {
   return (
     <div className="space-y-6">
       {/* Big numbers */}
-      <div className="flex items-end justify-between gap-6 rounded-xl border border-border bg-secondary/40 p-5">
+      <div className="flex items-end justify-between gap-6 rounded-xl bg-secondary/60 p-5">
         <div>
           <div className="text-xs uppercase tracking-wide text-muted-foreground">Факт потерь · YTD</div>
           <div className="mt-1 text-4xl font-bold text-foreground">
@@ -196,7 +196,7 @@ const DirectDrawerBody = ({ card }: { card: DirectCard }) => {
             Линия — пропорц. лимит {monthLimit.toFixed(0)} млн/мес
           </span>
         </div>
-        <div className="h-48 w-full rounded-xl border border-border bg-card p-3">
+        <div className="h-48 w-full rounded-xl bg-secondary/40 p-3">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data} margin={{ top: 8, right: 8, left: -16, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
@@ -221,15 +221,12 @@ const DirectDrawerBody = ({ card }: { card: DirectCard }) => {
       {/* Top incidents */}
       <div className="space-y-3">
         <h4 className="text-sm font-semibold text-foreground">Топ инцидентов в категории</h4>
-        <div className="overflow-hidden rounded-xl border border-border bg-card">
-          {list.map((it, i) => (
+        <div className="overflow-hidden rounded-xl bg-card divide-y divide-border">
+          {list.map((it) => (
             <button
               key={it.id}
               type="button"
-              className={cn(
-                "flex w-full items-center gap-4 px-4 py-3 text-left transition-colors hover:bg-secondary/60",
-                i !== list.length - 1 && "border-b border-border",
-              )}
+              className="flex w-full items-center gap-4 px-4 py-3 text-left transition-colors hover:bg-secondary/60"
             >
               <span className="text-xs text-muted-foreground w-10">{it.date}</span>
               <span className="font-mono-num text-[11px] font-semibold text-muted-foreground w-20">{it.id}</span>
@@ -263,7 +260,7 @@ const ForecastDrawerBody = ({ card }: { card: ForecastCard }) => {
   const series = card.trend.map((v, i) => ({ d: `D${i + 1}`, v }));
   return (
     <div className="space-y-6">
-      <div className="flex items-end justify-between gap-6 rounded-xl border border-border bg-secondary/40 p-5">
+      <div className="flex items-end justify-between gap-6 rounded-xl bg-secondary/60 p-5">
         <div>
           <div className="text-xs uppercase tracking-wide text-muted-foreground">Прогноз на конец года</div>
           <div className="mt-1 text-4xl font-bold text-foreground">
@@ -286,7 +283,7 @@ const ForecastDrawerBody = ({ card }: { card: ForecastCard }) => {
 
       <div className="space-y-3">
         <h4 className="text-sm font-semibold text-foreground">Динамика прогноза · 14 дней</h4>
-        <div className="h-44 w-full rounded-xl border border-border bg-card p-3">
+        <div className="h-44 w-full rounded-xl bg-secondary/40 p-3">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={series} margin={{ top: 8, right: 8, left: -16, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
@@ -306,7 +303,7 @@ const ForecastDrawerBody = ({ card }: { card: ForecastCard }) => {
         <h4 className="text-sm font-semibold text-foreground">Что повлияло на прогноз сегодня</h4>
         <div className="space-y-2">
           {forecastFactors.map((f) => (
-            <div key={f.title} className="flex items-center gap-3 rounded-xl border border-border bg-card p-3">
+            <div key={f.title} className="flex items-center gap-3 rounded-xl bg-secondary/40 p-3">
               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-attention/10">
                 <AlertTriangle className="h-4 w-4 text-attention" />
               </div>
@@ -412,7 +409,7 @@ export const LimitCards = () => {
       </section>
 
       <Sheet open={!!openKey} onOpenChange={(o) => !o && setOpenKey(null)}>
-        <SheetContent side="right" className="w-[92vw] overflow-y-auto rounded-l-2xl border-0 p-0 shadow-floating sm:max-w-[640px]"><div className="p-8 space-y-6">
+        <SheetContent side="right" className="w-[92vw] overflow-y-auto p-0 sm:max-w-[640px]"><div className="p-8 space-y-6">
           {active && (
             <>
               <SheetHeader className="mb-6">
