@@ -84,14 +84,21 @@ export const RiskHeatmap = () => {
                 const tone = toneFor(r, c);
                 const isEmpty = cell.count === 0;
                 const isHovered = hovered?.r === r && hovered?.c === c;
+                const isHotZone = tone === "critical" && !isEmpty;
                 return (
                   <button
                     key={`${r}-${c}`}
                     onMouseEnter={() => setHovered({ r, c })}
                     onMouseLeave={() => setHovered(null)}
+                    title={
+                      !isEmpty
+                        ? `Перейти к рискам · ${probabilityLabels[r]} × ${impactLabels[c]}`
+                        : undefined
+                    }
                     className={cn(
                       "relative flex h-[60px] flex-col items-center justify-center rounded-md transition-all",
                       isEmpty ? emptyStyles : toneStyles[tone],
+                      isHotZone && "ring-2 ring-critical/60 ring-offset-1 ring-offset-card",
                       isHovered && !isEmpty && "ring-2 ring-offset-2 ring-offset-card ring-primary/40 scale-[1.04] z-10",
                     )}
                   >
@@ -113,8 +120,14 @@ export const RiskHeatmap = () => {
             )}
           </div>
 
+          {/* Подпись проблемной зоны */}
+          <div className="pointer-events-none mt-2 flex items-center justify-end gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-critical">
+            <span className="h-1.5 w-1.5 rounded-full bg-critical" />
+            Зона с наибольшими потерями
+          </div>
+
           {/* X-axis labels */}
-          <div className="mt-2 grid grid-cols-4 gap-1.5">
+          <div className="mt-1 grid grid-cols-4 gap-1.5">
             {impactLabels.map((l) => (
               <span key={l} className="text-center text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
                 {l}
