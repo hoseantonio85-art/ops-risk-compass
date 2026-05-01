@@ -315,13 +315,13 @@ export const ContributionWidget = () => {
       </div>
 
       <div className="surface-card p-6">
-        <div className="mb-5 inline-flex rounded-lg border border-border bg-secondary/60 p-0.5">
+        <div className="mb-5 inline-flex rounded-full bg-secondary p-1">
           {(["scenarios", "risks"] as const).map((m) => (
             <button
               key={m}
               onClick={() => switchMode(m)}
               className={cn(
-                "rounded-md px-3 py-1 text-xs font-medium transition-all",
+                "rounded-full px-3.5 py-1 text-xs font-medium transition-all",
                 mode === m ? "bg-card text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground",
               )}
             >
@@ -364,7 +364,7 @@ export const ContributionWidget = () => {
       </div>
 
       <Sheet open={!!selected} onOpenChange={(o) => !o && setSelectedId(null)}>
-        <SheetContent side="right" className="w-[92vw] overflow-y-auto rounded-l-2xl border-0 p-0 shadow-floating sm:max-w-[640px]"><div className="p-8 space-y-6">
+        <SheetContent side="right" className="w-[92vw] overflow-y-auto p-0 sm:max-w-[640px]"><div className="p-8 space-y-6">
           {selected && (
             <>
               <SheetHeader>
@@ -416,11 +416,11 @@ export const ContributionWidget = () => {
                 <div className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                   Топ инцидентов категории
                 </div>
-                <ul className="space-y-1">
+                <ul className="divide-y divide-border rounded-xl bg-card">
                   {selected.incidents.slice(0, 5).map((inc, idx) => (
                     <li
                       key={idx}
-                      className="flex items-center justify-between gap-2 rounded-lg border border-border bg-card px-3 py-2 text-xs"
+                      className="flex items-center justify-between gap-2 px-3 py-2 text-xs"
                     >
                       <span className="min-w-0 flex-1 truncate text-foreground">{inc.name}</span>
                       <span className="text-muted-foreground">{inc.date}</span>
@@ -432,7 +432,7 @@ export const ContributionWidget = () => {
                 </ul>
               </div>
 
-              <button className="mt-6 inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-secondary">
+              <button className="mt-6 inline-flex w-full items-center justify-center gap-1.5 rounded-xl bg-secondary px-3 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-secondary/70">
                 Все инциденты этой категории
                 <ArrowRight className="h-4 w-4" />
               </button>
