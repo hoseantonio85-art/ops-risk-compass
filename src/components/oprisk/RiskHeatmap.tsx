@@ -144,7 +144,7 @@ export const RiskHeatmap = () => {
       </div>
 
       {/* Hint area */}
-      <div className="mt-4 min-h-[56px] rounded-xl border border-border bg-secondary/40 p-3">
+      <div className="mt-4 min-h-[56px] rounded-xl bg-secondary/60 p-3">
         {hoveredCell && hoveredCell.count > 0 ? (
           <div className="space-y-1 animate-fade-in-up">
             <div className="flex items-center justify-between text-xs">
@@ -167,7 +167,7 @@ export const RiskHeatmap = () => {
       </div>
 
       <Sheet open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
-        <SheetContent side="right" className="w-[92vw] overflow-y-auto rounded-l-2xl border-0 p-0 shadow-floating sm:max-w-[640px]"><div className="p-8 space-y-6">
+        <SheetContent side="right" className="w-[92vw] overflow-y-auto p-0 sm:max-w-[640px]"><div className="p-8 space-y-6">
           {selected && selectedCell && (
             <>
               <SheetHeader>
@@ -186,11 +186,11 @@ export const RiskHeatmap = () => {
                 <div className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                   Риски в ячейке
                 </div>
-                <ul className="space-y-1.5">
+                <ul className="divide-y divide-border rounded-xl bg-card">
                   {selectedCell.top.map((name, idx) => (
                     <li
                       key={idx}
-                      className="flex items-center justify-between gap-2 rounded-lg border border-border bg-card px-3 py-2 text-xs"
+                      className="flex items-center justify-between gap-2 px-3 py-2 text-xs"
                     >
                       <span className="min-w-0 flex-1 truncate text-foreground">{name}</span>
                       <ArrowRight className="h-3.5 w-3.5 text-muted-foreground" />
@@ -199,7 +199,7 @@ export const RiskHeatmap = () => {
                 </ul>
               </div>
 
-              <button className="mt-6 inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-secondary">
+              <button className="mt-6 inline-flex w-full items-center justify-center gap-1.5 rounded-xl bg-primary px-3 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90">
                 Открыть реестр с фильтром
                 <ArrowRight className="h-4 w-4" />
               </button>
