@@ -29,7 +29,7 @@ export const AISummary = () => {
 
           <p className="max-w-3xl text-xl font-medium leading-relaxed text-foreground lg:text-[22px]">
             Ситуация требует внимания. Лимит использован на{" "}
-            <span className="font-mono-num font-bold text-attention">82%</span>, но пока не пробит.
+            <span className="font-bold text-attention">82%</span>, но пока не пробит.
             Основной вклад дают{" "}
             <span className="font-semibold text-foreground">3 риска</span>. Есть{" "}
             <span className="font-semibold text-attention">4 просроченные меры</span>, 2 из них связаны
@@ -44,11 +44,11 @@ export const AISummary = () => {
               </div>
               <ol className="space-y-1 text-sm font-medium text-foreground">
                 <li className="flex items-baseline gap-2">
-                  <span className="font-mono-num text-xs font-bold text-primary">1.</span>
+                  <span className="text-xs font-bold text-primary">1.</span>
                   Утилизации лимита
                 </li>
                 <li className="flex items-baseline gap-2">
-                  <span className="font-mono-num text-xs font-bold text-primary">2.</span>
+                  <span className="text-xs font-bold text-primary">2.</span>
                   Просроченных мер
                 </li>
               </ol>
