@@ -1,5 +1,4 @@
-import { ArrowRight, Sparkles, HelpCircle, ShieldAlert } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Sparkles, ShieldAlert } from "lucide-react";
 
 export const AISummary = () => {
   return (
@@ -57,20 +56,6 @@ export const AISummary = () => {
                 Это важно, потому что 2 меры связаны с рисками, влияющими на лимит.
               </div>
             </div>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2 pt-1">
-            <Button className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm">
-              К лимиту
-              <ArrowRight className="ml-1.5 h-4 w-4" />
-            </Button>
-            <Button variant="outline" className="border-border-strong bg-card hover:bg-secondary">
-              Проверить меры
-            </Button>
-            <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
-              <HelpCircle className="mr-1.5 h-4 w-4" />
-              Почему такой вывод
-            </Button>
           </div>
         </div>
       </div>
