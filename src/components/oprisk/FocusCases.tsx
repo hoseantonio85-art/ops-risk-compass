@@ -50,8 +50,8 @@ const cases: FocusCase[] = [
 ];
 
 const reasonStyles = {
-  attention: "bg-attention text-attention-foreground border-attention shadow-sm",
-  critical: "bg-critical text-critical-foreground border-critical shadow-sm",
+  attention: "bg-attention-soft text-attention",
+  critical: "bg-critical-soft text-critical",
 };
 
 export const FocusCases = () => {
@@ -82,9 +82,9 @@ export const FocusCases = () => {
             >
               {/* Reason — почему в фокусе. Главный приоритетный бейдж, считывается первым */}
               <div
-                className={`mb-4 inline-flex items-center gap-1.5 self-start rounded-md border px-3 py-1.5 text-xs font-bold uppercase tracking-wide ${reasonStyles[c.reasonTone]}`}
+                className={`mb-4 inline-flex items-center gap-1.5 self-start rounded-full px-3 py-1 text-xs font-medium ${reasonStyles[c.reasonTone]}`}
               >
-                <ReasonIcon className="h-3.5 w-3.5" strokeWidth={3} />
+                <ReasonIcon className="h-3.5 w-3.5" strokeWidth={2.5} />
                 {c.reason}
               </div>
 
@@ -101,7 +101,7 @@ export const FocusCases = () => {
                 )}
               </div>
 
-              <div className="mt-5 space-y-2.5 border-t border-border pt-4 text-sm">
+              <div className="mt-5 space-y-2.5 pt-4 text-sm">
                 <div className="flex items-baseline justify-between">
                   <span className="text-muted-foreground">Потери</span>
                   <span className="text-base font-semibold text-foreground">{c.loss}</span>
