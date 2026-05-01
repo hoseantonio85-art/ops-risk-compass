@@ -232,7 +232,7 @@ const DirectDrawerBody = ({ card }: { card: DirectCard }) => {
               )}
             >
               <span className="text-xs text-muted-foreground w-10">{it.date}</span>
-              <span className="text-[11px] font-semibold text-muted-foreground w-20">{it.id}</span>
+              <span className="font-mono-num text-[11px] font-semibold text-muted-foreground w-20">{it.id}</span>
               <span className="flex-1 truncate text-sm text-foreground">{it.title}</span>
               <span className="text-sm font-semibold text-foreground">{it.sum} млн</span>
               <span

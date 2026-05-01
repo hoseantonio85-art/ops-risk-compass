@@ -323,7 +323,7 @@ export const AttentionZone = () => {
                         >
                           <div className="min-w-0 flex-1">
                             <div className="flex items-center gap-2">
-                              <span className="text-[10px] text-muted-foreground">{item.id}</span>
+                              <span className="font-mono-num text-[10px] text-muted-foreground">{item.id}</span>
                               <span className={cn("truncate font-medium", toneText[item.tone ?? "default"])}>
                                 {item.title}
                               </span>
