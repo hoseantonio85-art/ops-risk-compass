@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 
 // 4x4 матрица: вероятность (Y, низ→верх) × влияние (X, лево→право)
 // Каждая ячейка: count рисков, sumLoss (млн ₽), top риски
