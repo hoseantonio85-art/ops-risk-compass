@@ -10,6 +10,7 @@ interface AttentionCard {
   status: string;
   statusTone: StatusTone;
   metrics: { value: string; label: string; emphasis?: boolean }[];
+  hint?: string;
   cta: string;
 }
 
@@ -24,6 +25,7 @@ const cards: AttentionCard[] = [
       { value: "0", label: "С пробитым лимитом" },
       { value: "0", label: "AI-риски на подтверждение" },
     ],
+    hint: "Все ключевые риски в норме, действий не требуется.",
     cta: "Перейти в риски",
   },
   {
@@ -36,6 +38,7 @@ const cards: AttentionCard[] = [
       { value: "2", label: "Связаны с высокими рисками" },
       { value: "1", label: "Мера без прогресса" },
     ],
+    hint: "Требуется обновить статус или назначить владельцев.",
     cta: "Открыть просроченные",
   },
   {
@@ -48,6 +51,7 @@ const cards: AttentionCard[] = [
       { value: "0", label: "В красной зоне" },
       { value: "1", label: "Ухудшается 3-й месяц" },
     ],
+    hint: "Есть негативная динамика, требуется проверка.",
     cta: "Открыть КИРы",
   },
 ];
@@ -114,9 +118,15 @@ export const AttentionZone = () => {
                 ))}
               </div>
 
+              {card.hint && (
+                <p className="mt-5 rounded-lg border border-border bg-secondary/50 px-3 py-2 text-xs leading-relaxed text-muted-foreground">
+                  {card.hint}
+                </p>
+              )}
+
               <Button
                 variant="outline"
-                className="mt-6 w-full border-border-strong bg-card hover:bg-primary hover:text-primary-foreground hover:border-primary"
+                className="mt-4 w-full border-border-strong bg-card hover:bg-primary hover:text-primary-foreground hover:border-primary"
               >
                 {card.cta}
                 <ArrowRight className="ml-1.5 h-4 w-4" />

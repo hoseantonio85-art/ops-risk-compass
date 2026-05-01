@@ -50,8 +50,8 @@ const cases: FocusCase[] = [
 ];
 
 const reasonStyles = {
-  attention: "bg-attention-soft text-attention border-attention/20",
-  critical: "bg-critical-soft text-critical border-critical/20",
+  attention: "bg-attention text-attention-foreground border-attention shadow-sm",
+  critical: "bg-critical text-critical-foreground border-critical shadow-sm",
 };
 
 export const FocusCases = () => {
@@ -80,11 +80,11 @@ export const FocusCases = () => {
               key={c.title}
               className="surface-card group flex flex-col p-5 transition-all hover:-translate-y-0.5 hover:shadow-elevated"
             >
-              {/* Reason — почему в фокусе, наверху, цветная подсветка */}
+              {/* Reason — почему в фокусе. Главный приоритетный бейдж, считывается первым */}
               <div
-                className={`mb-4 inline-flex items-center gap-1.5 self-start rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide ${reasonStyles[c.reasonTone]}`}
+                className={`mb-4 inline-flex items-center gap-1.5 self-start rounded-md border px-3 py-1.5 text-xs font-bold uppercase tracking-wide ${reasonStyles[c.reasonTone]}`}
               >
-                <ReasonIcon className="h-3 w-3" strokeWidth={2.5} />
+                <ReasonIcon className="h-3.5 w-3.5" strokeWidth={3} />
                 {c.reason}
               </div>
 

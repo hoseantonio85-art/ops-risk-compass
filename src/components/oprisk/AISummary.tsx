@@ -39,12 +39,22 @@ export const AISummary = () => {
 
           <div className="flex items-start gap-2.5 rounded-xl border border-primary/10 bg-card/60 p-4 backdrop-blur-sm">
             <ShieldAlert className="mt-0.5 h-4 w-4 shrink-0 text-primary" strokeWidth={2.5} />
-            <div>
+            <div className="space-y-1.5">
               <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                Рекомендуемое действие
+                Рекомендуем начать с
               </div>
-              <div className="mt-1 text-sm font-medium text-foreground">
-                Проверьте утилизацию лимита и просроченные меры.
+              <ol className="space-y-1 text-sm font-medium text-foreground">
+                <li className="flex items-baseline gap-2">
+                  <span className="font-mono-num text-xs font-bold text-primary">1.</span>
+                  Утилизации лимита
+                </li>
+                <li className="flex items-baseline gap-2">
+                  <span className="font-mono-num text-xs font-bold text-primary">2.</span>
+                  Просроченных мер
+                </li>
+              </ol>
+              <div className="pt-1 text-xs text-muted-foreground">
+                Это важно, потому что 2 меры связаны с рисками, влияющими на лимит.
               </div>
             </div>
           </div>
