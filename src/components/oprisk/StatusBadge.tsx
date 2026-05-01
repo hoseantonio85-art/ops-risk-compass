@@ -12,19 +12,19 @@ interface StatusBadgeProps {
 }
 
 const toneStyles: Record<StatusTone, string> = {
-  calm: "bg-calm-soft text-calm border-calm/20",
-  attention: "bg-attention-soft text-attention border-attention/25",
-  critical: "bg-critical-soft text-critical border-critical/25",
-  neutral: "bg-neutral-soft text-muted-foreground border-border",
+  calm: "bg-calm-soft text-calm",
+  attention: "bg-attention-soft text-attention",
+  critical: "bg-critical-soft text-critical",
+  neutral: "bg-neutral-soft text-muted-foreground",
 };
 
 export const StatusBadge = ({ tone, children, icon: Icon, size = "md", className }: StatusBadgeProps) => {
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full border font-medium",
+        "inline-flex items-center gap-1.5 rounded-full font-medium",
         toneStyles[tone],
-        size === "sm" ? "px-2 py-0.5 text-[11px]" : "px-2.5 py-1 text-xs",
+        size === "sm" ? "px-2 py-0.5 text-xs" : "px-2.5 py-1 text-xs",
         className,
       )}
     >

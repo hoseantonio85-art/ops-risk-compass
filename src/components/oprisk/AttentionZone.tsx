@@ -241,7 +241,7 @@ export const AttentionZone = () => {
                     <span className="text-sm text-muted-foreground">{m.label}</span>
                     <span
                       className={cn(
-                        "font-mono-num text-2xl font-bold tabular-nums",
+                        "text-2xl font-bold tabular-nums",
                         m.emphasis ? "text-attention" : "text-foreground",
                         m.value === "0" && "text-muted-foreground/70",
                       )}
@@ -271,7 +271,7 @@ export const AttentionZone = () => {
       </div>
 
       <Sheet open={!!openKey} onOpenChange={(o) => !o && setOpenKey(null)}>
-        <SheetContent side="right" className="w-full overflow-y-auto sm:max-w-[480px]">
+        <SheetContent side="right" className="w-[92vw] overflow-y-auto rounded-l-2xl border-0 p-0 shadow-floating sm:max-w-[640px]"><div className="p-8 space-y-6">
           {openMetric && detail && openCard && (
             <>
               <SheetHeader>
@@ -282,7 +282,7 @@ export const AttentionZone = () => {
                 <SheetDescription className="flex items-baseline gap-3 pt-1">
                   <span
                     className={cn(
-                      "font-mono-num text-3xl font-bold",
+                      "text-3xl font-bold",
                       openMetric.emphasis ? "text-attention" : "text-foreground",
                       openMetric.value === "0" && "text-muted-foreground/70",
                     )}
@@ -302,7 +302,7 @@ export const AttentionZone = () => {
                     {detail.breakdown.map((b, idx) => (
                       <div key={idx} className="flex items-center justify-between px-3 py-2 text-xs">
                         <span className="text-muted-foreground">{b.label}</span>
-                        <span className={cn("font-mono-num text-sm font-semibold", toneText[b.tone ?? "default"])}>
+                        <span className={cn("text-sm font-semibold", toneText[b.tone ?? "default"])}>
                           {b.value}
                         </span>
                       </div>
@@ -350,7 +350,7 @@ export const AttentionZone = () => {
               </button>
             </>
           )}
-        </SheetContent>
+        </div></SheetContent>
       </Sheet>
     </section>
   );

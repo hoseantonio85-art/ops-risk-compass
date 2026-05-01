@@ -10,7 +10,7 @@ export const PageHeader = () => {
   return (
     <header className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
       <div className="space-y-2">
-        <h1 className="text-[40px] font-bold leading-tight tracking-tight text-foreground">
+        <h1 className="text-3xl font-semibold leading-tight tracking-tight text-foreground lg:text-[36px]">
           Главная
         </h1>
         <p className="text-base text-muted-foreground">

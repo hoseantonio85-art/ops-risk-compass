@@ -109,13 +109,13 @@ export const RiskHeatmap = () => {
                     )}
                   >
                     {isEmpty ? (
-                      <span className="font-mono-num text-xs">—</span>
+                      <span className="text-xs">—</span>
                     ) : (
                       <>
-                        <span className="font-mono-num text-base font-bold leading-none">
+                        <span className="text-base font-bold leading-none">
                           {cell.count}
                         </span>
-                        <span className="mt-0.5 font-mono-num text-[10px] opacity-80">
+                        <span className="mt-0.5 text-[10px] opacity-80">
                           {cell.loss.toLocaleString("ru-RU")}
                         </span>
                       </>
@@ -151,7 +151,7 @@ export const RiskHeatmap = () => {
               <span className="font-medium text-foreground">
                 {probabilityLabels[hovered!.r]} · {impactLabels[hovered!.c]}
               </span>
-              <span className="font-mono-num font-semibold text-foreground">
+              <span className="font-semibold text-foreground">
                 {hoveredCell.count} рисков · {hoveredCell.loss.toLocaleString("ru-RU")} млн ₽
               </span>
             </div>
@@ -167,7 +167,7 @@ export const RiskHeatmap = () => {
       </div>
 
       <Sheet open={!!selected} onOpenChange={(o) => !o && setSelected(null)}>
-        <SheetContent side="right" className="w-full overflow-y-auto sm:max-w-[480px]">
+        <SheetContent side="right" className="w-[92vw] overflow-y-auto rounded-l-2xl border-0 p-0 shadow-floating sm:max-w-[640px]"><div className="p-8 space-y-6">
           {selected && selectedCell && (
             <>
               <SheetHeader>
@@ -175,7 +175,7 @@ export const RiskHeatmap = () => {
                   {probabilityLabels[selected.r]} × {impactLabels[selected.c]}
                 </SheetTitle>
                 <SheetDescription className="flex items-baseline gap-2 pt-1">
-                  <span className="font-mono-num text-2xl font-bold text-foreground">{selectedCell.count}</span>
+                  <span className="text-2xl font-bold text-foreground">{selectedCell.count}</span>
                   <span className="text-xs text-muted-foreground">
                     рисков · {selectedCell.loss.toLocaleString("ru-RU")} млн ₽ совокупных потерь
                   </span>
@@ -205,7 +205,7 @@ export const RiskHeatmap = () => {
               </button>
             </>
           )}
-        </SheetContent>
+        </div></SheetContent>
       </Sheet>
 
       {/* Legend */}
