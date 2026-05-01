@@ -146,16 +146,19 @@ export const RiskHeatmap = () => {
                 {probabilityLabels[hovered!.r]} · {impactLabels[hovered!.c]}
               </span>
               <span className="font-mono-num font-semibold text-foreground">
-                {hoveredCell.loss.toLocaleString("ru-RU")} млн ₽
+                {hoveredCell.count} рисков · {hoveredCell.loss.toLocaleString("ru-RU")} млн ₽
               </span>
             </div>
             <div className="text-[11px] text-muted-foreground">
-              Топ: {hoveredCell.top.slice(0, 3).join(" · ")}
+              Топ-3: {hoveredCell.top.slice(0, 3).join(" · ")}
+            </div>
+            <div className="pt-0.5 text-[11px] font-semibold text-primary">
+              Клик → риски с фильтром «{probabilityLabels[hovered!.r]} × {impactLabels[hovered!.c]}» →
             </div>
           </div>
         ) : (
           <div className="flex h-full items-center justify-center text-xs text-muted-foreground">
-            Наведите на ячейку, чтобы увидеть детали
+            Наведите на ячейку — увидите детали. Клик → к рискам с фильтром.
           </div>
         )}
       </div>
