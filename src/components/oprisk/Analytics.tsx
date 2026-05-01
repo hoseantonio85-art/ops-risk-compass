@@ -1,5 +1,4 @@
 import { RiskHeatmap } from "./RiskHeatmap";
-import { ContributionChart } from "./ContributionChart";
 
 export const Analytics = () => {
   return (
@@ -8,14 +7,11 @@ export const Analytics = () => {
         <h2 id="analytics-title" className="text-2xl font-semibold tracking-tight text-foreground">
           Аналитика
         </h2>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Что формирует текущую картину
-        </p>
+        <p className="mt-1 text-sm text-muted-foreground">Что формирует текущую картину</p>
       </div>
 
-      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5">
         <RiskHeatmap />
-        <ContributionChart />
       </div>
     </section>
   );
