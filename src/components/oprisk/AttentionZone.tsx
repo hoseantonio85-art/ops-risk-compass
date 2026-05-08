@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowRight, ShieldCheck, ClipboardList, Activity, CheckCircle2, AlertTriangle } from "lucide-react";
+import { ArrowRight, ShieldCheck, ClipboardList, Activity, CheckCircle2, AlertTriangle, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { StatusBadge, type StatusTone } from "./StatusBadge";
 import type { LucideIcon } from "lucide-react";
@@ -231,7 +231,19 @@ export const AttentionZone = () => {
                 </StatusBadge>
               </div>
 
-              <div className="mt-6 flex-1 space-y-3">
+              {card.hint && (
+                <div className="mt-4 flex items-start gap-2 rounded-xl bg-gradient-ai-soft px-3 py-2.5">
+                  <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-gradient-ai">
+                    <Sparkles className="h-3.5 w-3.5 text-primary-foreground" strokeWidth={2.5} />
+                  </div>
+                  <div className="flex flex-col gap-0.5">
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-primary">AI</span>
+                    <p className="text-xs leading-relaxed text-foreground/80">{card.hint}</p>
+                  </div>
+                </div>
+              )}
+
+              <div className="mt-4 flex-1 space-y-3">
                 {card.metrics.map((m) => (
                   <button
                     key={m.key}
@@ -252,11 +264,6 @@ export const AttentionZone = () => {
                 ))}
               </div>
 
-              {card.hint && (
-                <p className="mt-5 rounded-xl bg-secondary/60 px-3 py-2 text-xs leading-relaxed text-muted-foreground">
-                  {card.hint}
-                </p>
-              )}
 
               <Button
                 variant="outline"
