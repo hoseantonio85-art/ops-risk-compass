@@ -296,6 +296,7 @@ export const ContributionWidget = () => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const data = useMemo(() => (mode === "scenarios" ? scenarios : risks), [mode]);
   const selected = selectedId ? data.find((d) => d.id === selectedId) : null;
+  const total = useMemo(() => data.reduce((s, d) => s + d.pct, 0), [data]);
 
   const switchMode = (m: "scenarios" | "risks") => {
     setMode(m);
@@ -304,64 +305,69 @@ export const ContributionWidget = () => {
   };
 
   return (
-    <section aria-labelledby="contribution-title" className="space-y-5">
-      <div>
-        <h2 id="contribution-title" className="text-2xl font-semibold tracking-tight text-foreground">
-          Вклад в утилизацию
-        </h2>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Что больше всего влияет на лимит — кликните сегмент для разбора в дровере
-        </p>
+    <div className="surface-card flex h-full flex-col p-6">
+      <div className="mb-1 flex items-baseline justify-between gap-3">
+        <h3 className="text-base font-semibold text-foreground">Вклад в утилизацию</h3>
+        <span className="text-xs text-muted-foreground">доля · млн ₽</span>
+      </div>
+      <p className="mb-4 text-xs text-muted-foreground">
+        Что больше всего влияет на лимит — клик по сегменту откроет разбор
+      </p>
+
+      <div className="mb-4 inline-flex w-fit rounded-full bg-secondary p-1">
+        {(["scenarios", "risks"] as const).map((m) => (
+          <button
+            key={m}
+            onClick={() => switchMode(m)}
+            className={cn(
+              "rounded-full px-3 py-1 text-xs font-medium transition-all",
+              mode === m ? "bg-card text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground",
+            )}
+          >
+            {m === "scenarios" ? "По сценариям" : "По рискам"}
+          </button>
+        ))}
       </div>
 
-      <div className="surface-card p-6">
-        <div className="mb-5 inline-flex rounded-full bg-secondary p-1">
-          {(["scenarios", "risks"] as const).map((m) => (
+      {/* Stacked horizontal bar */}
+      <div className="flex h-2.5 w-full overflow-hidden rounded-full bg-secondary">
+        {data.map((d, i) => (
+          <button
+            key={d.id}
+            onMouseEnter={() => setHovered(i)}
+            onMouseLeave={() => setHovered(null)}
+            onClick={() => setSelectedId(d.id)}
+            aria-label={`${d.name} · ${d.pct}%`}
+            className="h-full transition-opacity"
+            style={{
+              width: `${(d.pct / total) * 100}%`,
+              backgroundColor: d.color,
+              opacity: hovered === null || hovered === i ? 1 : 0.4,
+            }}
+          />
+        ))}
+      </div>
+
+      <ul className="mt-4 flex w-full flex-1 flex-col gap-0.5">
+        {data.map((d, i) => (
+          <li key={d.id}>
             <button
-              key={m}
-              onClick={() => switchMode(m)}
+              onMouseEnter={() => setHovered(i)}
+              onMouseLeave={() => setHovered(null)}
+              onClick={() => setSelectedId(d.id)}
               className={cn(
-                "rounded-full px-3.5 py-1 text-xs font-medium transition-all",
-                mode === m ? "bg-card text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground",
+                "group flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-left transition-colors",
+                hovered === i ? "bg-secondary" : "hover:bg-secondary/70",
               )}
             >
-              {m === "scenarios" ? "По сценариям" : "По рискам"}
+              <span className="h-2.5 w-2.5 shrink-0 rounded-sm" style={{ backgroundColor: d.color }} />
+              <span className="min-w-0 flex-1 truncate text-sm text-foreground">{d.name}</span>
+              <span className="text-xs text-muted-foreground">{d.mln}</span>
+              <span className="w-9 text-right text-sm font-semibold tabular-nums text-foreground">{d.pct}%</span>
             </button>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[auto_1fr]">
-          <div className="flex justify-center">
-            <Donut
-              data={data}
-              hovered={hovered}
-              onHover={setHovered}
-              onSelect={(id) => setSelectedId(id)}
-            />
-          </div>
-          <ul className="flex w-full flex-col gap-1">
-            {data.map((d, i) => (
-              <li key={d.id}>
-                <button
-                  onMouseEnter={() => setHovered(i)}
-                  onMouseLeave={() => setHovered(null)}
-                  onClick={() => setSelectedId(d.id)}
-                  className={cn(
-                    "group flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left transition-colors",
-                    hovered === i ? "bg-secondary" : "hover:bg-secondary/70",
-                  )}
-                >
-                  <span className="h-2.5 w-2.5 shrink-0 rounded-sm" style={{ backgroundColor: d.color }} />
-                  <span className="min-w-0 flex-1 truncate text-sm text-foreground">{d.name}</span>
-                  <span className="text-xs text-muted-foreground">{d.mln} млн</span>
-                  <span className="w-10 text-right text-sm font-semibold text-foreground">{d.pct}%</span>
-                  <ArrowRight className="h-3.5 w-3.5 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
+          </li>
+        ))}
+      </ul>
 
       <Sheet open={!!selected} onOpenChange={(o) => !o && setSelectedId(null)}>
         <SheetContent side="right" className="w-[92vw] overflow-y-auto p-0 sm:max-w-[640px]"><div className="p-8 space-y-6">
