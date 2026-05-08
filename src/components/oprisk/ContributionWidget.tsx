@@ -214,88 +214,13 @@ const risks: Segment[] = [
   },
 ];
 
-const Donut = ({
-  data,
-  hovered,
-  onHover,
-  onSelect,
-}: {
-  data: Segment[];
-  hovered: number | null;
-  onHover: (i: number | null) => void;
-  onSelect: (id: string) => void;
-}) => {
-  const size = 240;
-  const cx = size / 2;
-  const cy = size / 2;
-  const r = 96;
-  const innerR = 64;
-  const total = data.reduce((s, d) => s + d.pct, 0);
-  let acc = 0;
-  const arcs = data.map((d, i) => {
-    const start = (acc / total) * Math.PI * 2 - Math.PI / 2;
-    acc += d.pct;
-    const end = (acc / total) * Math.PI * 2 - Math.PI / 2;
-    const large = end - start > Math.PI ? 1 : 0;
-    const isHovered = hovered === i;
-    const rOuter = isHovered ? r + 6 : r;
-    const x1 = cx + rOuter * Math.cos(start);
-    const y1 = cy + rOuter * Math.sin(start);
-    const x2 = cx + rOuter * Math.cos(end);
-    const y2 = cy + rOuter * Math.sin(end);
-    const x3 = cx + innerR * Math.cos(end);
-    const y3 = cy + innerR * Math.sin(end);
-    const x4 = cx + innerR * Math.cos(start);
-    const y4 = cy + innerR * Math.sin(start);
-    const path = `M ${x1} ${y1} A ${rOuter} ${rOuter} 0 ${large} 1 ${x2} ${y2} L ${x3} ${y3} A ${innerR} ${innerR} 0 ${large} 0 ${x4} ${y4} Z`;
-    return { path, color: d.color, i, id: d.id };
-  });
-  const center = hovered !== null ? data[hovered] : null;
-  return (
-    <div className="relative">
-      <svg viewBox={`0 0 ${size} ${size}`} className="h-[240px] w-[240px]">
-        {arcs.map((a) => (
-          <path
-            key={a.i}
-            d={a.path}
-            fill={a.color}
-            onMouseEnter={() => onHover(a.i)}
-            onMouseLeave={() => onHover(null)}
-            onClick={() => onSelect(a.id)}
-            style={{
-              transition: "all 200ms cubic-bezier(0.4,0,0.2,1)",
-              cursor: "pointer",
-              opacity: hovered === null || hovered === a.i ? 1 : 0.5,
-            }}
-          />
-        ))}
-      </svg>
-      <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center text-center">
-        {center ? (
-          <>
-            <div className="text-3xl font-bold text-foreground">{center.pct}%</div>
-            <div className="mt-1 max-w-[120px] text-[10px] uppercase tracking-wider text-muted-foreground">
-              {center.name}
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="text-[10px] uppercase tracking-wider text-muted-foreground">всего</div>
-            <div className="text-3xl font-bold text-foreground">100%</div>
-            <div className="mt-1 text-[10px] text-muted-foreground">кликните сегмент</div>
-          </>
-        )}
-      </div>
-    </div>
-  );
-};
-
 export const ContributionWidget = () => {
   const [mode, setMode] = useState<"scenarios" | "risks">("scenarios");
   const [hovered, setHovered] = useState<number | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const data = useMemo(() => (mode === "scenarios" ? scenarios : risks), [mode]);
   const selected = selectedId ? data.find((d) => d.id === selectedId) : null;
+  const total = useMemo(() => data.reduce((s, d) => s + d.pct, 0), [data]);
 
   const switchMode = (m: "scenarios" | "risks") => {
     setMode(m);
@@ -304,64 +229,69 @@ export const ContributionWidget = () => {
   };
 
   return (
-    <section aria-labelledby="contribution-title" className="space-y-5">
-      <div>
-        <h2 id="contribution-title" className="text-2xl font-semibold tracking-tight text-foreground">
-          Вклад в утилизацию
-        </h2>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Что больше всего влияет на лимит — кликните сегмент для разбора в дровере
-        </p>
+    <div className="surface-card flex h-full flex-col p-6">
+      <div className="mb-1 flex items-baseline justify-between gap-3">
+        <h3 className="text-base font-semibold text-foreground">Вклад в утилизацию</h3>
+        <span className="text-xs text-muted-foreground">доля · млн ₽</span>
+      </div>
+      <p className="mb-4 text-xs text-muted-foreground">
+        Что больше всего влияет на лимит — клик по сегменту откроет разбор
+      </p>
+
+      <div className="mb-4 inline-flex w-fit rounded-full bg-secondary p-1">
+        {(["scenarios", "risks"] as const).map((m) => (
+          <button
+            key={m}
+            onClick={() => switchMode(m)}
+            className={cn(
+              "rounded-full px-3 py-1 text-xs font-medium transition-all",
+              mode === m ? "bg-card text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground",
+            )}
+          >
+            {m === "scenarios" ? "По сценариям" : "По рискам"}
+          </button>
+        ))}
       </div>
 
-      <div className="surface-card p-6">
-        <div className="mb-5 inline-flex rounded-full bg-secondary p-1">
-          {(["scenarios", "risks"] as const).map((m) => (
+      {/* Stacked horizontal bar */}
+      <div className="flex h-2.5 w-full overflow-hidden rounded-full bg-secondary">
+        {data.map((d, i) => (
+          <button
+            key={d.id}
+            onMouseEnter={() => setHovered(i)}
+            onMouseLeave={() => setHovered(null)}
+            onClick={() => setSelectedId(d.id)}
+            aria-label={`${d.name} · ${d.pct}%`}
+            className="h-full transition-opacity"
+            style={{
+              width: `${(d.pct / total) * 100}%`,
+              backgroundColor: d.color,
+              opacity: hovered === null || hovered === i ? 1 : 0.4,
+            }}
+          />
+        ))}
+      </div>
+
+      <ul className="mt-4 flex w-full flex-1 flex-col gap-0.5">
+        {data.map((d, i) => (
+          <li key={d.id}>
             <button
-              key={m}
-              onClick={() => switchMode(m)}
+              onMouseEnter={() => setHovered(i)}
+              onMouseLeave={() => setHovered(null)}
+              onClick={() => setSelectedId(d.id)}
               className={cn(
-                "rounded-full px-3.5 py-1 text-xs font-medium transition-all",
-                mode === m ? "bg-card text-foreground shadow-xs" : "text-muted-foreground hover:text-foreground",
+                "group flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-left transition-colors",
+                hovered === i ? "bg-secondary" : "hover:bg-secondary/70",
               )}
             >
-              {m === "scenarios" ? "По сценариям" : "По рискам"}
+              <span className="h-2.5 w-2.5 shrink-0 rounded-sm" style={{ backgroundColor: d.color }} />
+              <span className="min-w-0 flex-1 truncate text-sm text-foreground">{d.name}</span>
+              <span className="text-xs text-muted-foreground">{d.mln}</span>
+              <span className="w-9 text-right text-sm font-semibold tabular-nums text-foreground">{d.pct}%</span>
             </button>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[auto_1fr]">
-          <div className="flex justify-center">
-            <Donut
-              data={data}
-              hovered={hovered}
-              onHover={setHovered}
-              onSelect={(id) => setSelectedId(id)}
-            />
-          </div>
-          <ul className="flex w-full flex-col gap-1">
-            {data.map((d, i) => (
-              <li key={d.id}>
-                <button
-                  onMouseEnter={() => setHovered(i)}
-                  onMouseLeave={() => setHovered(null)}
-                  onClick={() => setSelectedId(d.id)}
-                  className={cn(
-                    "group flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left transition-colors",
-                    hovered === i ? "bg-secondary" : "hover:bg-secondary/70",
-                  )}
-                >
-                  <span className="h-2.5 w-2.5 shrink-0 rounded-sm" style={{ backgroundColor: d.color }} />
-                  <span className="min-w-0 flex-1 truncate text-sm text-foreground">{d.name}</span>
-                  <span className="text-xs text-muted-foreground">{d.mln} млн</span>
-                  <span className="w-10 text-right text-sm font-semibold text-foreground">{d.pct}%</span>
-                  <ArrowRight className="h-3.5 w-3.5 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
+          </li>
+        ))}
+      </ul>
 
       <Sheet open={!!selected} onOpenChange={(o) => !o && setSelectedId(null)}>
         <SheetContent side="right" className="w-[92vw] overflow-y-auto p-0 sm:max-w-[640px]"><div className="p-8 space-y-6">
@@ -440,6 +370,6 @@ export const ContributionWidget = () => {
           )}
         </div></SheetContent>
       </Sheet>
-    </section>
+    </div>
   );
 };

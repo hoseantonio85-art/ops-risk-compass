@@ -232,14 +232,11 @@ export const AttentionZone = () => {
               </div>
 
               {card.hint && (
-                <div className="mt-4 flex items-start gap-2 rounded-xl bg-gradient-ai-soft px-3 py-2.5">
+                <div className="mt-4 flex items-center gap-2 rounded-xl bg-gradient-ai-soft px-3 py-2.5">
                   <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-gradient-ai">
                     <Sparkles className="h-3.5 w-3.5 text-primary-foreground" strokeWidth={2.5} />
                   </div>
-                  <div className="flex flex-col gap-0.5">
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-primary">AI</span>
-                    <p className="text-xs leading-relaxed text-foreground/80">{card.hint}</p>
-                  </div>
+                  <p className="text-xs leading-relaxed text-foreground/80">{card.hint}</p>
                 </div>
               )}
 
