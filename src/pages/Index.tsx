@@ -2,7 +2,7 @@ import { TopBar } from "@/components/oprisk/TopBar";
 import { PageHeader } from "@/components/oprisk/PageHeader";
 import { AISummary } from "@/components/oprisk/AISummary";
 import { LimitCards } from "@/components/oprisk/LimitCards";
-import { ContributionWidget } from "@/components/oprisk/ContributionWidget";
+
 import { FocusCases } from "@/components/oprisk/FocusCases";
 import { AttentionZone } from "@/components/oprisk/AttentionZone";
 import { Analytics } from "@/components/oprisk/Analytics";
