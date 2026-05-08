@@ -18,7 +18,6 @@ const Index = () => {
         <FocusCases />
         <AttentionZone />
         <Analytics />
-        <ContributionWidget />
 
         <footer className="flex items-center justify-between border-t border-border pt-6 text-xs text-muted-foreground">
           <span>OpRisk Platform · прототип главной страницы</span>
