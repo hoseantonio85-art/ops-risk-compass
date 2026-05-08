@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowRight, ShieldCheck, ClipboardList, Activity, CheckCircle2, AlertTriangle } from "lucide-react";
+import { ArrowRight, ShieldCheck, ClipboardList, Activity, CheckCircle2, AlertTriangle, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { StatusBadge, type StatusTone } from "./StatusBadge";
 import type { LucideIcon } from "lucide-react";
