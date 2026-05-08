@@ -370,6 +370,6 @@ export const ContributionWidget = () => {
           )}
         </div></SheetContent>
       </Sheet>
-    </section>
+    </div>
   );
 };
