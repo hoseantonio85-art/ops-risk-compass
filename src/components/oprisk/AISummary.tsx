@@ -16,8 +16,8 @@ export const AISummary = () => {
         className="pointer-events-none absolute -bottom-32 left-1/3 h-56 w-56 rounded-full bg-primary/10 blur-3xl"
       />
 
-      <div className="relative flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
-        <div className="flex-1 space-y-4">
+      <div className="relative flex flex-col gap-6">
+        <div className="space-y-4">
           <div className="flex items-center gap-2.5">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-ai shadow-sm">
               <Sparkles className="h-4 w-4 text-primary-foreground" strokeWidth={2.5} />
@@ -27,7 +27,7 @@ export const AISummary = () => {
             </h2>
           </div>
 
-          <p className="max-w-3xl text-xl font-medium leading-relaxed text-foreground lg:text-[22px]">
+          <p className="text-base font-medium leading-relaxed text-foreground lg:text-lg">
             Ситуация требует внимания. Лимит использован на{" "}
             <span className="font-bold text-attention">82%</span>, но пока не пробит.
             Основной вклад дают{" "}
